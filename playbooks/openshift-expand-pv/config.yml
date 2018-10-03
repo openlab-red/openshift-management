@@ -20,7 +20,7 @@
 
 - hosts: all
   roles:
-  - role: expand_pv
+  - role: openshift_expand_pv
 
 - name: Expand PV Checkpoint End
   hosts: localhost
