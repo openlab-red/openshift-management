@@ -4,9 +4,6 @@ EXEC="$1"
 TYPE=$2
 MKTEMP=$(dirname $(realpath $0))
 
-echo $MKTEMP
-exit
-
 function containers {
     case $1 in
         --check)
