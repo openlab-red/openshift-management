@@ -8,6 +8,7 @@
 |[openshift-quota](./playbooks/openshift-quota/README.md)|
 |[openshift-identity-providers](./playbooks/openshift-identity-providers/README.md)|
 |[openshift-ldap-sync](./playbooks/openshift-ldap-sync/README.md)|
+|[openshift-ca-bundle](./playbooks/openshift-ca-bundle/README.md)|
 |[docker-gc](./playbooks/docker-gc/README.md)|
 
 # References

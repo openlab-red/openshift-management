@@ -1,0 +1,36 @@
+---
+- name: Initialization Checkpoint Start
+  hosts: localhost
+  gather_facts: false
+  roles:
+  - installer_checkpoint
+
+- name: CA Bundle Checkpoint Start
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Set CA Bundle 'In Progress'
+    run_once: true
+    set_stats:
+      data:
+        installer_phase_ca_bundle:
+          title:  "OpenShift CA Bundle"
+          status: "In Progress"
+          start: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"
+
+- hosts: all
+  roles:
+  - role: openshift_ca_bundle
+
+- name: CA Bundle Checkpoint End
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Set CA Bundle 'Complete'
+    run_once: true
+    set_stats:
+      data:
+        installer_phase_ca_bundle:
+          title:  "OpenShift CA Bundle"
+          status: "Complete"
+          end: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"

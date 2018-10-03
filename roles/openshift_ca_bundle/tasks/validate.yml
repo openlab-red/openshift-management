@@ -1,0 +1,21 @@
+- name: Fail if openshift_master_named_certificates is empty
+  fail:
+    msg: openshift_master_named_certificates is empty
+  when: openshift_master_named_certificates is not defined or openshift_master_named_certificates | from_yaml | length == 0
+
+- set_fact:
+    named_certificates: '{{ openshift_master_named_certificates | from_yaml }}'
+
+- name: Fail if cafile key is present
+  fail:
+    msg: Missing cafile
+  when: "'cafile' not in item"
+  with_items: '{{ named_certificates }}'
+
+- name: Fail if cafile is empty
+  fail:
+    msg: cafile is empty
+  with_dict: ' {{ named_certificates }} '
+  when: item.key == 'cafile' and item.value is not defined or item.value | length == 0
+
+

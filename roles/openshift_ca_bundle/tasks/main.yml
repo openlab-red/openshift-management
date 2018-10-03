@@ -1,0 +1,3 @@
+- import_tasks: validate.yml
+
+- import_tasks: assemble-ca-bundle.yml
