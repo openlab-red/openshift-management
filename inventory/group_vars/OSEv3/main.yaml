@@ -1,0 +1,52 @@
+############################################################################
+#### OpenShift Master Identity Providers
+############################################################################
+
+openshift_master_identity_providers:
+  - name: 'LDAPPasswordIdentityProvider'
+    challenge: true
+    login: true
+    mappingMethod: 'add'
+    provider:
+      apiVersion: 'v1'
+      attributes:
+        email:
+          - 'mail'
+        id:
+          - 'dn'
+        name:
+          - 'cn'
+        preferredUsername:
+          - 'sAMAccountName'
+      bindDN: 'bindDN'
+      bindPassword: 'bindPassword'
+      ca: '/etc/pki/tls/certs/ca-bundle.crt'
+      insecure: false
+      kind: 'LDAPPasswordIdentityProvider'
+      url: 'ldaps://<url>/baseDN?sAMAccountName?sub?(objectClass=user)'
+  - name: 'Local'
+    challenge: true
+    login: true
+    mappingMethod: 'add'
+    provider:
+      apiVersion: 'v1'
+      kind: 'HTPasswdPasswordIdentityProvider'
+      file: '/etc/origin/master/htpasswd'
+  - name: 'google'
+    login: true
+    challenge: false
+    mappingMethod: 'claim'
+    provider:
+      apiVersion: v1
+      kind: 'GoogleIdentityProvider'
+      clientID: 'clientID.apps.googleusercontent.com'
+      clientSecret: 'clientSecret'
+  - name: 'github'
+    login: true
+    challenge: false
+    mappingMethod: 'claim'
+    provider:
+      apiVersion: v1
+      kind: 'GitHubIdentityProvider'
+      clientID: 'clientID'
+      clientSecret: 'clientSecret'

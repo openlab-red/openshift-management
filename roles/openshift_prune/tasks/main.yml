@@ -1,0 +1,18 @@
+---
+
+- import_tasks: prune-builds-deployments.yml
+  vars:
+    openshift_prune_type: builds
+  tags: openshift_prune_builds
+
+- import_tasks: prune-builds-deployments.yml
+  vars:
+    openshift_prune_type: deployments
+  tags: openshift_prune_deployments
+
+- import_tasks: prune-images.yml
+  vars:
+    openshift_prune_type: images
+  tags: openshift_prune_images
+
+

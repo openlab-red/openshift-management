@@ -1,0 +1,24 @@
+kind: LDAPSyncConfig
+apiVersion: v1
+url: "{{ ldap_sync.url }}"
+insecure: {{ ldap_sync.insecure | default ('true') | bool }}
+ca: "{{ldap_sync.ca | default ('') }}"
+bindDN: "{{ ldap_sync.bindDN }}"
+bindPassword: "{{ ldap_sync.bindPassword }}"
+rfc2307:
+    groupsQuery:
+        baseDN: "{{ ldap_sync.groupsQuery }}"
+        scope: sub
+        derefAliases: never
+        filter: (objectClass=group)
+    groupUIDAttribute: dn
+    groupNameAttributes: [ cn ]
+    groupMembershipAttributes: [ member ]
+    usersQuery:
+        baseDN: "{{ ldap_sync.usersQuery }}"
+        scope: sub
+        derefAliases: never
+    userUIDAttribute: dn
+    userNameAttributes: [ sAMAccountName ]
+    tolerateMemberNotFoundErrors: true
+    tolerateMemberOutOfScopeErrors: true

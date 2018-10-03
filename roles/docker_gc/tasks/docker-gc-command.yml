@@ -1,0 +1,26 @@
+- name: Check Garbage Collector {{ docker_gc_type }} status'
+  command: '{{ mktemp.stdout }}/docker-gc.sh --check {{ docker_gc_type }}'
+  register: docker_gc_check
+
+- name: Dry Run - Docker Garbage Collector {{ docker_gc_type }}
+  debug:
+    msg: '{{ docker_gc_check.stdout_lines }}'
+  when: docker_gc_dryrun
+
+- block:
+
+  - name: Docker Garbage Collector {{ docker_gc_type }}
+    command: '{{ mktemp.stdout }}/docker-gc.sh --run {{ docker_gc_type }}'
+    register: docker_gc_command
+
+  - name: Docker GC {{ docker_gc_type }} Error
+    debug:
+      msg: '{{ docker_gc_command.stderr_lines }}'
+    when: docker_gc_command is defined and docker_gc_command.stderr_lines is defined and docker_gc_command.stderr_lines | length > 0
+
+  - name: Docker GC {{ docker_gc_type }} Output
+    debug:
+      msg: '{{ docker_gc_command.stdout_lines }}'
+    when: docker_gc_command is defined and docker_gc_command.stdout_lines is defined
+
+  when: not docker_gc_dryrun and docker_gc_check.stdout_lines | length > 0

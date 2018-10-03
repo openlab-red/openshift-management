@@ -1,0 +1,11 @@
+- name: Copy Quota files
+  copy:
+    src: 'quota-{{openshift_quota_tier}}.yml'
+    dest: '{{ mktemp.stdout }}/quota-{{openshift_quota_tier}}.yml'
+
+- name: Apply Quota {{openshift_quota_tier}}
+  command: >
+    oc apply -f {{ mktemp.stdout }}/quota-{{openshift_quota_tier}}.yml -n {{ item }}
+  with_items:
+    '{{ openshift_quota_projects }}'
+  when: openshift_quota_projects | length > 0

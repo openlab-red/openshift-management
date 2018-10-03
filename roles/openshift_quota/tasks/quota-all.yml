@@ -1,0 +1,44 @@
+- name: Retrieve openshift projects
+  command: >
+    oc projects -q
+  register: openshift_quota_projects_command
+
+- set_fact:
+    openshift_quota_projects: '{{openshift_quota_projects_command.stdout_lines}}'
+    openshift_quota_infrastructure_projects:
+    - default
+    - kube-system
+    - openshift-infra
+    - openshift-metrics
+    - openshift-grafana
+    - grafana
+    - openshift-service-catalog
+    - openshift-glusterfs
+    - glusterfs
+    - storage
+    - openshift-web-console
+    - kube-service-catalog
+    - kube-public
+    - logging
+    - management-infra
+    - openshift-node
+    - openshift-template-service-broker
+    - openshift-ansible-service-broker
+    - openshift-management
+    - openshift
+
+- name: Debug quota projects excluder
+  debug:
+    msg: '{{ openshift_quota_projects_excluder }}'
+    verbosity: 3
+
+- name: Remove infrastructure project
+  set_fact:
+    openshift_quota_projects: '{{openshift_quota_projects | difference(openshift_quota_infrastructure_projects) | difference (openshift_quota_projects_excluder) }}'
+
+- name: Apply Quota {{openshift_quota_tier}} to
+  debug:
+    msg: '{{ openshift_quota_projects }}'
+
+
+- include_tasks: quota.yml

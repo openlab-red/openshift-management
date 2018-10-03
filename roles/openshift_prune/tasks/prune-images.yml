@@ -1,0 +1,16 @@
+---
+
+- name: Fail if openshift_prune_images_token is missing.
+  fail:
+    msg: 'Error you must use a client config with a token, var openshift_prune_images_token is not defined'
+  when: openshift_prune_images_token is not defined or openshift_prune_images_token == ''
+
+- name: Prune Images
+  shell: |
+    oc adm prune {{ openshift_prune_type }} --keep-tag-revisions={{ openshift_prune_images_tag_revisions }} \
+      --keep-younger-than={{ openshift_prune_images_keep_younger }} \
+      --confirm={{ openshift_prune_confirm }} \
+      --token={{ openshift_prune_images_token }}
+  register: openshift_prune_command
+
+- import_tasks: prune-output.yml

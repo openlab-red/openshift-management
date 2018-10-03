@@ -1,0 +1,14 @@
+---
+- name: Enable ExpandPersistenVolumes on Node
+  yedit:
+    src: '{{ expand_pv_node_config }}'
+    key: kubeletArguments.feature-gates
+    value:
+    - ExpandPersistentVolumes=true
+    state: present
+    backup: yes
+
+- name:  Restart Node
+  service:
+    name: atomic-openshift-node
+    state: restarted

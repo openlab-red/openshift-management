@@ -1,0 +1,11 @@
+- name: Create temp directory for doing work in
+  command: mktemp -d /tmp/openshift-quota-ansible-XXXXXX
+  register: mktemp
+  changed_when: False
+  check_mode: no
+
+- include_tasks: quota.yml
+  when: not openshift_quota_all_projects | bool
+
+- include_tasks: quota-all.yml
+  when: openshift_quota_all_projects | bool

@@ -1,0 +1,5 @@
+openshift_quota_tier: 'small'
+openshift_quota_projects: []
+openshift_quota_all_projects: false
+openshift_quota_projects_excluder: []
+openshift_quota_cfme_adapter: false

@@ -1,0 +1,2 @@
+expand_pv_master_config: '/etc/origin/master/master-config.yaml'
+expand_pv_node_config: '/etc/origin/node/node-config.yaml'

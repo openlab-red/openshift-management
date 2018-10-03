@@ -1,0 +1,11 @@
+---
+- name: Prune {{ openshift_prune_type }}
+  shell: |
+    oc adm prune {{ openshift_prune_type }} --keep-complete={{ openshift_prune_complete }} \
+      --keep-failed={{ openshift_prune_failed }} \
+      --keep-younger-than={{ openshift_prune_keep_younger }} \
+      --orphans \
+      --confirm={{ openshift_prune_confirm }}
+  register: openshift_prune_command
+
+- import_tasks: prune-output.yml

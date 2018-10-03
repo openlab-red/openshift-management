@@ -1,0 +1,9 @@
+- name: Prune {{ openshift_prune_type }} Error
+  debug:
+    msg: '{{ openshift_prune_command.stderr_lines }}'
+  when: openshift_prune_command is defined and openshift_prune_command.stderr_lines is defined and openshift_prune_command.stderr_lines | length > 0
+
+- name: Prune {{ openshift_prune_type }} Output
+  debug:
+    msg: '{{ openshift_prune_command.stdout_lines }}'
+  when: openshift_prune_command is defined and openshift_prune_command.stdout_lines is defined

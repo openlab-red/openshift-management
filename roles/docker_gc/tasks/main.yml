@@ -1,0 +1,32 @@
+---
+
+- name: Create temp directory for doing work in
+  command: mktemp -d /tmp/docker-gc-ansible-XXXXXX
+  register: mktemp
+  changed_when: False
+  check_mode: no
+  tags: always
+
+- name: Copy Garbage Collector scripts
+  copy:
+    src: '{{ item }}'
+    dest: '{{ mktemp.stdout }}/{{ item }}'
+    mode: 0755
+  with_items:
+    - docker-gc.sh
+  tags: always
+
+- import_tasks: docker-gc-command.yml
+  vars:
+    docker_gc_type: containers
+  tags: docker_gc_containers
+
+- import_tasks: docker-gc-command.yml
+  vars:
+    docker_gc_type: images
+  tags: docker_gc_images
+
+- import_tasks: docker-gc-command.yml
+  vars:
+    docker_gc_type: volumes
+  tags: docker_gc_volumes

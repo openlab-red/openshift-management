@@ -1,0 +1,20 @@
+---
+- name: Apply ldap sync template on /etc/origin/master/
+  template:
+    src: '{{ item }}.yaml.j2'
+    dest: '/etc/origin/master/{{ item }}.yaml'
+  with_items:
+    - groupsync
+    - whitelist
+
+- name: Login to Openshift
+  command: oc whoami
+  changed_when: false
+
+- name: Switch to default project
+  command: oc project default
+
+- name: Run sync
+  command: oc adm groups sync --sync-config=/etc/origin/master/groupsync.yaml --whitelist=/etc/origin/master/whitelist.yaml --confirm
+  tags:
+   - syncOnly

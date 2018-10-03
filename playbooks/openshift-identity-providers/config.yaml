@@ -1,0 +1,20 @@
+- hosts: masters
+  tags:
+   - idp
+
+  tasks:
+  - block:
+    - name: Set identityProviders to master config
+      modify_yaml:
+        dest: /etc/origin/master/master-config.yaml
+        yaml_key: oauthConfig.identityProviders
+        yaml_value: "{{ ocp_identity_providers }}"
+
+    - name: Restart master instance
+      systemd:
+        name: "{{ item }}"
+        state: restarted
+      with_items: "{{ ['atomic-openshift-master'] if groups.masters | length == 1 else ['atomic-openshift-master-api'] }}"
+
+    when: openshift_master_identity_providers is defined
+

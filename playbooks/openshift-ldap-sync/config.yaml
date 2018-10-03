@@ -1,0 +1,15 @@
+- hosts: masters[0]
+  tags:
+   - ldap-sync
+
+  roles:
+    - role: openshift_ldap_sync
+      ldap_sync:
+#        url: ""
+#        insecure: true
+#        ca: ""
+#        bindDN: ""
+#        bindPassword: ""
+#        groupsQuery: ""
+#        usersQuery: ""
+#        whitelist: []
