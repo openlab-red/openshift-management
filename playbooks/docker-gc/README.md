@@ -10,11 +10,15 @@ Garbage collection playbooks **_docker-gc/config.yml_**.
 
 ## Dry Run
 
-Performing a dry-run instead of the prune
+Performing a dry-run instead of the docker garbage collection
 
 |Parameters                 | Default |
 |---------------------------|---------| 
-| openshift_prune_dryrun    | False   |
+| docker_gc_dryrun          | False   |
+
+```
+ansible-playbook docker-gc/config.yml -e docker_gc_dryrun=true
+```
 
 ## GC Containers
 
