@@ -2,10 +2,6 @@
 
 Garbage collection playbooks **_docker-gc/config.yml_**.
 
-Containers that exited more than an hour ago are removed.
-
-Optionally, remove volumes that are not associated to any remaining container after removal (Available only for docker >= 1.9.0
-
 |Tags                       | Tasks                                                                            |
 |---------------------------|----------------------------------------------------------------------------------|
 |docker_gc_containers       | Containers that are in exited status and dead                                    |
