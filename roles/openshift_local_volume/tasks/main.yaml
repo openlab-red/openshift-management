@@ -1,0 +1,5 @@
+---
+- import_tasks: masters.yaml
+  when: "'masters' in group_names"
+
+- import_tasks: nodes.yaml

@@ -1,0 +1,16 @@
+---
+- name: Enable PersistentLocalVolumes on Master
+  yedit:
+    src: '{{ openshift_local_volume_master_config }}'
+    key: kubernetesMasterConfig.{{ item }}.feature-gates
+    value:
+    - PersistentLocalVolumes=true
+    state: present
+    backup: yes
+  with_items:
+     - apiServerArguments
+     - controllerArguments
+
+- import_role:
+    name: openshift_master
+    tasks_from: restart-master.yaml
