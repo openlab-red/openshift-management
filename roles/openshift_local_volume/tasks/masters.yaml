@@ -12,6 +12,7 @@
   with_items:
      - apiServerArguments
      - controllerArguments
+     - schedulerArguments
 
 
 - import_role:
