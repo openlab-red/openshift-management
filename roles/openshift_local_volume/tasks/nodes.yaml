@@ -5,15 +5,8 @@
     key: kubeletArguments.feature-gates
     value:
     - PersistentLocalVolumes=true
-    state: present
-    backup: yes
-
-- name: Enable VolumeScheduling on Node
-  yedit:
-    src: '{{ openshift_local_volume_node_config }}'
-    key: kubeletArguments.feature-gates
-    value:
     - VolumeScheduling=true
+    - MountPropagation=true
     state: present
     backup: yes
 
