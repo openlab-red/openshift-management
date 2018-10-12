@@ -1,4 +1,4 @@
-- include_task: lvm.yml
+- include_tasks: lvm.yml
   vars:
     provision_lvm: '{{ item }}'
   with_items: '{{ provision_lvm_list }}'
