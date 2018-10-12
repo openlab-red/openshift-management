@@ -1,0 +1,42 @@
+---
+- name: Initialization Checkpoint Start
+  hosts: localhost
+  gather_facts: false
+  roles:
+  - installer_checkpoint
+
+- name: Provision LVM Checkpoint Start
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Set Provision LVM 'In Progress'
+    run_once: true
+    set_stats:
+      data:
+        installer_phase_expand_pv:
+          title:  "Provision LVM"
+          status: "In Progress"
+          start: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"
+
+- hosts: all
+  roles:
+  - role: provision_lvm
+#    provision_lvm_list:
+#      - name: disk1
+#        disksize: 10G
+#        group: local-volume
+#        mount_root_point: /mnt/local-storage
+
+
+- name: Provision LVM Checkpoint End
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Set Provision LVM 'Complete'
+    run_once: true
+    set_stats:
+      data:
+        installer_phase_expand_pv:
+          title:  "Provision LVM"
+          status: "Complete"
+          end: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"

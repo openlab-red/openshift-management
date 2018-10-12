@@ -1,0 +1,3 @@
+- name:
+  shell: |
+    chcon -R unconfined_u:object_r:svirt_sandbox_file_t:s0 {{ openshift_local_volume_mountpoint }}

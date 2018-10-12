@@ -1,0 +1,12 @@
+- name: Provision LVM
+  shell: |
+    lvcreate -L {{provision_lvm.disksize}} -n {{ provision_lvm.name }} {{ provision_lvm.group }}
+    mkfs.ext4 /dev/{{ provision_lvm.group }}/{{ provision_lvm.name }}
+    mkdir -p {{ provision_lvm.mount_root_point }}/{{ provision_lvm.group }}/{{ provision_lvm.name }}
+    mount /dev/{{ provision_lvm.group }}/{{ provision_lvm.name }} {{ provision_lvm.mount_root_point }}/{{ provision_lvm.group }}/{{ provision_lvm.name }}
+
+- import_role:
+    name: openshift_local_volume
+    tasks_from: local-storage-permission.yaml
+  vars:
+    openshift_local_volume_mountpoint: '{{ provision_lvm.mount_root_point }}/{{ provision_lvm.group }}/{{ provision_lvm.name }}'
