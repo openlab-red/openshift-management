@@ -10,6 +10,7 @@
 |[openshift-ldap-sync](./playbooks/openshift-ldap-sync/README.md)|
 |[openshift-ca-bundle](./playbooks/openshift-ca-bundle/README.md)|
 |[openshift-local-volume](./playbooks/openshift-local-volume/README.md)|
+|[provision-lvm](./playbooks/provision-lvm/README.md)|
 |[docker-gc](./playbooks/docker-gc/README.md)|
 
 # References
