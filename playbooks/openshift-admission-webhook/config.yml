@@ -1,0 +1,36 @@
+---
+- name: Initialization Checkpoint Start
+  hosts: localhost
+  gather_facts: false
+  roles:
+  - installer_checkpoint
+
+- name: Admission WebHook Checkpoint Start
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Set Admission WebHook 'In Progress'
+    run_once: true
+    set_stats:
+      data:
+        installer_phase_admission_webhook:
+          title:  "OpenShift Admission WebHook"
+          status: "In Progress"
+          start: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"
+
+- hosts: masters
+  roles:
+  - role: openshift_admission_webhook
+
+- name: Admission WebHook Checkpoint End
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Set Admission WebHook 'Complete'
+    run_once: true
+    set_stats:
+      data:
+        installer_phase_admission_webhook:
+          title:  "OpenShift Admission WebHook"
+          status: "Complete"
+          end: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"

@@ -1,0 +1,23 @@
+---
+
+- name: Enable Admission Webhook on Master
+  yedit:
+    src: '{{ openshift_admission_webhook_master_config }}'
+    key: admissionConfig.pluginConfig.{{ item }}.configuration
+    value: |
+      apiVersion: v1
+      disable: false
+      kind: DefaultAdmissionConfig
+    state: present
+    backup: yes
+  with_items:
+   - ValidatingAdmissionWebhook
+   - MutatingAdmissionWebhook
+
+- name:  Restart master api
+  service:
+    name: '{{ item }}'
+    state: restarted
+  with_items:
+    - atomic-openshift-master-api
+    - atomic-openshift-master-controllers
