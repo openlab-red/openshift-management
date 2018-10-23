@@ -1,18 +1,4 @@
-- name: Create temp directory for doing work in
-  command: mktemp -d /tmp/openshift-ca-bundle-ansible-XXXXXX
-  register: mktemp
-  changed_when: False
-  check_mode: no
-  tags: always
-
-- name: Copy cafiles
-  copy:
-    src: '{{ item.value }}'
-    dest: '{{ mktemp.stdout }}/{{ item.value | basename }}'
-  with_dict: ' {{ named_certificates }} '
-  when: item.key == 'cafile'
-
-- name: Copy current ca.crt
+- name: Copy current OpenShift ca.crt
   copy:
     src: '/etc/origin/master/ca.crt'
     dest: '{{ mktemp.stdout }}/ca.crt'
@@ -25,11 +11,4 @@
     backup: yes
     validate: 'openssl x509 -in %s -text -noout'
     delimiter: '\n'
-
-- name:  Restart master api
-  service:
-    name: '{{ item }}'
-    state: restarted
-  with_items:
-  - atomic-openshift-master-api
-  - atomic-openshift-master-controllers
+  register: ca_bundle

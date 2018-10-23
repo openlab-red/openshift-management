@@ -1,0 +1,9 @@
+- name: Copy cafiles on named_certificates
+  copy:
+    src: '{{ item.value }}'
+    dest: '/etc/origin/master/named_certificates/{{ item.value | basename }}'
+
+- name: Copy cafiles on {{ mktemp.stdout }}
+  copy:
+    src: '{{ item.value }}'
+    dest: '{{ mktemp.stdout }}/{{ item.value | basename }}'
