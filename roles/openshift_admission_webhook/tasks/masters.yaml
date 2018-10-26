@@ -11,6 +11,7 @@
     state: present
     backup: yes
   with_items:
+   - Initializers
    - ValidatingAdmissionWebhook
    - MutatingAdmissionWebhook
 
