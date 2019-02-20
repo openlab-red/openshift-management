@@ -13,6 +13,9 @@
 |[openshift-admission-webhook](./playbooks/openshift-admission-webhook/README.md)|
 |[provision-lvm](./playbooks/provision-lvm/README.md)|
 |[docker-gc](./playbooks/docker-gc/README.md)|
+|[backup](./playbooks/backup-openshift-nodes.yaml)|
+|[restore](./playbooks/restore-openshift-nodes.yaml)|
+|[master-loglevel for 3.1x](./playbooks/master-loglevel.yaml)|
 
 # References
 
@@ -20,4 +23,5 @@
 * https://github.com/spotify/docker-gc
 * https://github.com/redhat-cop/casl-ansible
 * https://github.com/openshift/openshift-ansible
+* https://github.com/openshift/openshift-ansible-contrib
 * https://docs.openshift.com
