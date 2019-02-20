@@ -1,0 +1,12 @@
+- name: Check kubelet daemon is running
+  service:
+    name: atomic-openshift-node
+    state: started
+
+- name: '[ {{ static_pod_option }} ] {{ static_pod_option }} static pod {{ static_pod_name }}'
+  shell: /usr/local/bin/static-pod.sh {{ static_pod_option }} {{ static_pod_name }} {{ static_pod_manifest }}
+  register: static_pod_shell
+
+- name: '[ {{ static_pod_option }} ] {{ static_pod_option }} static pod {{ static_pod_shell.cmd }}'
+  debug:
+    msg: '{{ static_pod_shell.stdout }}'

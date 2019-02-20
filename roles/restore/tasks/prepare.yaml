@@ -1,0 +1,14 @@
+- name: Ensure backup_prefix is defined
+  fail:
+    msg: Ensure backup_prefix is not defined or empty
+  when: backup_prefix is not defined and backup_prefix == ''
+  run_once: true
+
+- name: Ensure directories restore exist
+  file:
+    path: '{{ restore_root }}/{{ backup_prefix }}/{{ item }}'
+    state: directory
+  delegate_to: localhost
+  run_once: true
+  with_items:
+    - '{{ groups["nodes"] }}'

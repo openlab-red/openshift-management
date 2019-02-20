@@ -1,0 +1,74 @@
+- name: Ensure single member cluster
+  lineinfile:
+    path: /etc/etcd/etcd.conf
+    regexp: '^ETCD_INITIAL_CLUSTER='
+    line: 'ETCD_INITIAL_CLUSTER={{ groups.masters.0 }}=https://{{ ansible_default_ipv4.address }}:2380 '
+    backup: yes
+
+- name: Clean ETCD_FORCE_NEW_CLUSTER
+  lineinfile:
+    path: /etc/etcd/etcd.conf
+    regexp: '^ETCD_FORCE_NEW_CLUSTER='
+    state: absent
+
+- name: Ensure ETCD_FORCE_NEW_CLUSTER=true
+  lineinfile:
+    path: /etc/etcd/etcd.conf
+    line: 'ETCD_FORCE_NEW_CLUSTER=true'
+
+- name: Clean ETCD_INITIAL_CLUSTER_STATE
+  lineinfile:
+    path: /etc/etcd/etcd.conf
+    regexp: '^ETCD_INITIAL_CLUSTER_STATE='
+    state: absent
+
+- name: Ensure ETCD_INITIAL_CLUSTER_STATE=new
+  lineinfile:
+    path: /etc/etcd/etcd.conf
+    regexp: '^ETCD_INITIAL_CLUSTER_STATE='
+    line: 'ETCD_INITIAL_CLUSTER_STATE=new'
+    insertafter: '^ETCD_INITIAL_CLUSTER='
+    state: present
+
+- name: Restore etcd snapshot
+  shell: |
+    /usr/local/bin/etcd-restore.sh {{ etcd_restore_target }}/db
+  register: etcdctl
+  ignore_errors: yes
+
+- name: Check Error {{ etcdctl.cmd }}
+  fail:
+    msg: '{{ item }}'
+  with_items: '{{ etcdctl.stderr_lines }}'
+  when: etcdctl.rc !=  0
+
+# etcdlctl snapshot writes in stderr.......
+- name: Restore output {{ etcdctl.cmd }}
+  debug:
+    msg: '{{ item }}'
+  with_items: '{{ etcdctl.stderr_lines }}'
+
+- name: Clean ETCD_INITIAL_CLUSTER_STATE
+  lineinfile:
+    path: /etc/etcd/etcd.conf
+    regexp: '^ETCD_INITIAL_CLUSTER_STATE='
+    state: absent
+
+- name: Ensure ETCD_INITIAL_CLUSTER_STATE=existing
+  lineinfile:
+    path: /etc/etcd/etcd.conf
+    regexp: '^ETCD_INITIAL_CLUSTER_STATE='
+    line: 'ETCD_INITIAL_CLUSTER_STATE=existing'
+    insertafter: '^ETCD_INITIAL_CLUSTER='
+    state: present
+
+- name: Clean ETCD_FORCE_NEW_CLUSTER
+  lineinfile:
+    path: /etc/etcd/etcd.conf
+    regexp: '^ETCD_FORCE_NEW_CLUSTER='
+    state: absent
+
+- import_role:
+    name: common
+    tasks_from: start-etcd.yaml
+

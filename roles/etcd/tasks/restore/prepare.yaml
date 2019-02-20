@@ -1,0 +1,31 @@
+- import_role:
+    name: common
+    tasks_from: stop-all.yaml
+
+- name: Ensure restore Etcd script is installed
+  copy:
+    src: '{{ item }}'
+    dest: '/usr/local/bin/{{ item }}'
+    mode: 0750
+    owner: root
+    group: root
+  with_items:
+    - etcd-restore.sh
+    - etcd-member.sh
+    - etcd-status.sh
+
+- name: Ensure {{ etcd_restore_target }} exists
+  file:
+    name: '{{ etcd_restore_target }}'
+    state: directory
+
+- name: Ensure etcd package is present
+  yum:
+    name: etcd
+    state: present
+
+- name: Copy backup files
+  unarchive:
+    src: '{{ restore_root }}/{{ backup_prefix }}/{{ ansible_fqdn }}/etcd.tar'
+    dest: '{{ etcd_restore_target }}'
+  when: ansible_fqdn == groups.masters.0

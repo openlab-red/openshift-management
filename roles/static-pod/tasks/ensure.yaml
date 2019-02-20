@@ -1,0 +1,31 @@
+- name: Ensure static_pod_name is defined
+  fail:
+    msg: Ensure static_pod_name is not defined or empty
+  when: static_pod_name is not defined and static_pod_name == ''
+  run_once: true
+
+- name: Ensure path exists
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ static_pod_stop }}'
+    - '{{ static_pod_start }}'
+
+- name: Ensure static-pod.sh script exists
+  template:
+    src: 'static-pod.sh.j2'
+    dest: '/usr/local/bin/static-pod.sh'
+    owner: root
+    group: root
+    mode: 0755
+
+- name: '[ {{ static_pod_option }} ] Verify static pod exists {{ static_pod_path }}'
+  stat:
+    path: '{{ static_pod_path }}'
+  register: static_pod_verify
+
+- name: '[ {{ static_pod_option }} ] Missing static pod {{ static_pod_path }}'
+  debug:
+    msg: 'Assuming {{ static_pod_name }} status is {{ static_pod_option }}'
+  when: not static_pod_verify.stat.exists | bool

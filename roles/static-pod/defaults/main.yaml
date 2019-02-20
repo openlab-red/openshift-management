@@ -1,0 +1,3 @@
+static_pod_start: '/etc/origin/node/pods'
+static_pod_stop: '/etc/origin/node/pods-stopped'
+static_pod_timeout: 10

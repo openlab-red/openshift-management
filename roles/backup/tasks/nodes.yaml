@@ -1,0 +1,27 @@
+---
+
+- name: Create list of installed packages
+  shell: |
+    rpm -qa | sort | tee {{ backup_root }}/packages.txt
+
+
+- name: Backup config directories and files
+  archive:
+    dest: '{{ backup_root }}/backup.tar'
+    path:
+      - /etc/origin
+      - /etc/etcd
+      - /etc/sysconfig
+      - /etc/cni
+      - /etc/dnsmasq.d
+      - /etc/pki/ca-trust/source/anchors
+      - /etc/docker/certs.d
+      - /etc/dnsmasq.conf
+      - '{{ backup_root }}/packages.txt'
+
+- name: Fetch backup
+  fetch:
+    src: '{{ backup_root }}/backup.tar'
+    dest: '{{ backup_dest_path }}/backup.tar'
+    flat: true
+    fail_on_missing: yes

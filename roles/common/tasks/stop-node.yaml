@@ -1,0 +1,7 @@
+---
+
+### Stop node
+- name: Stop node instances
+  systemd:
+    name: "atomic-openshift-node"
+    state: stopped

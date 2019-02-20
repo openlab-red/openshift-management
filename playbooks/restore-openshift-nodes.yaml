@@ -1,0 +1,31 @@
+---
+
+- hosts: OSEv3
+  vars:
+    - restore_root: /restore
+    - aws_s3: true
+#   - s3_backup_bucket:
+#   - aws_region:
+#   - backup_prefix:
+
+  roles:
+    - role: restore
+
+  post_tasks:
+    - import_role:
+        name: common
+        tasks_from: start-all.yaml
+      tags: start
+
+    - import_role:
+        name: common
+        tasks_from: restart-node.yaml
+      tags:
+        - masters
+        - nodes
+
+    - import_role:
+        name: restore
+        tasks_from: cleanup.yaml
+      tags:
+        - cleanup

@@ -1,0 +1,11 @@
+- name: Remove temporary {{ backup_root }}
+  file:
+    path: '{{ backup_root }}'
+    state: absent
+
+- name: Remove temporay {{ backup_root }} on localhost
+  file:
+    path: '{{ backup_root }}'
+    state: absent
+  delegate_to: localhost
+  run_once: true

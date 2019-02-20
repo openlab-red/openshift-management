@@ -1,0 +1,6 @@
+# Backup
+etcd_backup_root: /backup
+
+# Restore
+etcd_restore_target: /restore
+

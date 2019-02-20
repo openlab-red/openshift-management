@@ -1,0 +1,21 @@
+---
+
+- import_tasks: openshift-version.yaml
+
+### restart masters
+- name: Restart master instances
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - atomic-openshift-master-api
+    - atomic-openshift-master-controllers
+  when: "'3.9' in openshift_master_version"
+
+- name: Restart master instances
+  shell: /usr/local/bin/master-restart {{ item }}
+  failed_when: false
+  with_items:
+    - api
+    - controllers
+  when: "'3.10' in openshift_master_version or '3.11' in openshift_master_version"

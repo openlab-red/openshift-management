@@ -1,0 +1,20 @@
+---
+
+- import_tasks: openshift-version.yaml
+
+### Stop etcd
+- name: Start etcd instances
+  systemd:
+    name: etcd
+    state: started
+  when: "'3.9' in openshift_master_version"
+
+- name: Start etcd instances
+  import_role:
+    name: static-pod
+    tasks_from: start
+  vars:
+    static_pod:
+      name: etcd
+      manifest: etcd.yaml
+  when: "'3.10' in openshift_master_version or '3.11' in openshift_master_version"

@@ -1,0 +1,26 @@
+- name: Sync s3 bucket {{ s3_backup_bucket }}/{{ backup_prefix }} to restore
+  aws_s3:
+    bucket: '{{ s3_backup_bucket }}'
+    region: '{{ aws_region }}'
+    object: '{{ backup_prefix }}/{{ item }}/backup.tar'
+    dest: '{{ restore_root }}/{{ backup_prefix }}/{{ item }}/backup.tar'
+    mode: get
+  delegate_to: localhost
+  run_once: true
+  with_items:
+    - '{{ groups["nodes"] }}'
+
+
+- name: Sync s3 bucket {{ s3_backup_bucket }}/{{ backup_prefix }} to restore 1st Master
+  aws_s3:
+    bucket: '{{ s3_backup_bucket }}'
+    region: '{{ aws_region }}'
+    object: '{{ backup_prefix }}/{{ ansible_fqdn }}/{{ item }}'
+    dest: '{{ restore_root }}/{{ backup_prefix }}/{{ ansible_fqdn }}/{{ item }}'
+    mode: get
+  delegate_to: localhost
+  run_once: true
+  with_items:
+    - etcd.tar
+    - openshift-project.tar
+  when: 'ansible_nodename == groups.masters.0'

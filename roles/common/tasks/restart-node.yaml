@@ -1,0 +1,9 @@
+---
+
+### restart nodes
+- name: Restart node instances
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+   - atomic-openshift-node

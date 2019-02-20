@@ -1,0 +1,13 @@
+- set_fact:
+    static_pod_option: stop
+    static_pod_name: '{{ static_pod.name }}'
+    static_pod_manifest: '{{ static_pod.manifest }}'
+
+- set_fact:
+    static_pod_path: '{{ static_pod_start }}/{{ static_pod_manifest }}'
+
+- import_tasks: ensure.yaml
+
+- import_tasks: check.yaml
+  when: static_pod_verify.stat.exists | bool
+

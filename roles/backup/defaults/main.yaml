@@ -1,0 +1,2 @@
+backup_root: /backup
+backup_dest_path: '{{ backup_root }}/{{ backup_prefix }}/{{ ansible_fqdn }}'

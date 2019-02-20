@@ -1,0 +1,5 @@
+- name: Set current date and time
+  set_fact:
+    backup_prefix: "{{ ansible_date_time.date }}@{{ansible_date_time.hour }}"
+
+- import_tasks: openshift-version.yaml

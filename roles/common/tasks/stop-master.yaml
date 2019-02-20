@@ -1,0 +1,32 @@
+---
+
+- import_tasks: openshift-version.yaml
+
+### Stop masters
+- name: Stop master api, controllers and node instances
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+  with_items:
+    - atomic-openshift-master-api
+    - atomic-openshift-master-controllers
+    - atomic-openshift-node
+  when: "'3.9' in openshift_master_version"
+
+- name: Stop master api, controllers and node instances
+  block:
+    - include_role: 
+        name: static-pod
+        tasks_from: stop
+      with_items:
+        - name: api
+          manifest: apiserver.yaml
+        - name: controllers
+          manifest: controller.yaml
+      loop_control:
+        loop_var: static_pod
+
+    - systemd:
+        name: "atomic-openshift-node"
+        state: stopped
+  when: "'3.10' in openshift_master_version or '3.11' in openshift_master_version"

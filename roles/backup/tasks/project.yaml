@@ -1,0 +1,17 @@
+---
+
+- name: Run OpenShift Project Export script
+  shell: '{{ backup_root }}/openshift/do-project-export.sh /backup/openshift/data'
+
+- name: Create archive for OpenShift Project
+  archive:
+    path: '{{ backup_root }}/openshift/data'
+    dest: '{{ backup_root }}/openshift/openshift-project.tar'
+    format: tar
+
+- name: Fetch OpenShift Project archive
+  fetch:
+    src: '{{ backup_root }}/openshift/openshift-project.tar'
+    dest: '{{ backup_dest_path }}/openshift-project.tar'
+    flat: true
+    fail_on_missing: yes

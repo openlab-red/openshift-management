@@ -1,0 +1,21 @@
+---
+
+- import_tasks: prepare.yaml
+  tags: always
+
+- import_tasks: nodes.yaml
+  tags: nodes
+
+- import_role:
+    name: etcd
+    tasks_from: backup
+  when: "ansible_nodename == groups.masters.0"
+  run_once: true
+  tags: etcd
+
+- import_tasks: project.yaml
+  when: "ansible_nodename == groups.masters.0"
+  run_once: true
+  tags: project
+
+

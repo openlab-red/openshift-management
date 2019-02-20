@@ -1,0 +1,23 @@
+- import_role:
+    name: common
+    tasks_from: ansible-fact.yaml
+
+- name: Ensure directories backup exist
+  file:
+    path: /backup
+    state: directory
+
+- name: Ensure backup directory exists.
+  file:
+    path: '{{ backup_dest_path }}'
+    state: directory
+  delegate_to: localhost
+
+- name: Copy backup scripts
+  copy:
+    src: files/
+    dest: '{{ backup_root }}'
+    owner: root
+    group: root
+    mode: 0750
+  when: "'masters' in group_names"

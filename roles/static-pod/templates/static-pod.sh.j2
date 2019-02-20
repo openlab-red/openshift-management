@@ -1,0 +1,70 @@
+#!/bin/bash
+
+if [[ "$#" -ne 3 ]]
+then
+    echo "Missing parameters"
+    echo "static-pod.sh [start|stop] <static_pod_name> <static_pod_manifeste>  [static_pod_start_path] [static_pod_stop_path]"
+    exit 1
+fi
+
+OPTION=$1
+STATIC_POD_NAME=$2
+STATIC_POD_MANIFEST=$3
+STATIC_POD_START_PATH=${4-{{ static_pod_start }}}
+STATIC_POD_STOP_PATH=${5-{{ static_pod_stop }}}
+STATIC_POD_TIMEOUT={{ static_pod_timeout }}
+
+function start {
+    mv ${STATIC_POD_STOP_PATH}/${STATIC_POD_MANIFEST} ${STATIC_POD_START_PATH}/${STATIC_POD_MANIFEST}
+
+    sleep ${STATIC_POD_TIMEOUT}
+
+    CONTAINER=$(docker ps -f NAME=k8s_${STATIC_POD_NAME}_master-${STATIC_POD_NAME} -q)
+    POD=$(docker ps -f NAME=k8s_POD_master-${STATIC_POD_NAME} -q)
+
+    if [[ -z "${POD}" || -z "${CONTAINER}" ]]; then
+        echo "kubelet daemon seems down... force restarting..."
+        systemctl restart atomic-openshift-node
+        sleep 60
+    fi
+
+    echo "${STATIC_POD_NAME} has started"
+
+    exit 0
+}
+
+
+function stop {
+    mv ${STATIC_POD_START_PATH}/${STATIC_POD_MANIFEST} ${STATIC_POD_STOP_PATH}/${STATIC_POD_MANIFEST}
+
+    sleep ${STATIC_POD_TIMEOUT}
+
+    CONTAINER=$(docker ps -f NAME=k8s_${STATIC_POD_NAME}_master-${STATIC_POD_NAME} -q)
+    POD=$(docker ps -f NAME=k8s_POD_master-${STATIC_POD_NAME} -q)
+
+    if [[ "${POD}" ]]; then
+        docker stop "${POD}" --time ${STATIC_POD_TIMEOUT}
+    fi
+
+    if [[ "${CONTAINER}" ]]; then
+        docker stop "${CONTAINER}" --time ${STATIC_POD_TIMEOUT}
+    fi
+
+    echo "${STATIC_POD_NAME} has stopped"
+
+    exit 0
+}
+
+case ${OPTION} in
+start)
+  start
+  ;;
+stop)
+  stop
+  ;;
+*)
+  echo "Unknown options, available [start|stop]"
+  exit 1
+  ;;
+esac
+

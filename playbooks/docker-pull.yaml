@@ -1,0 +1,49 @@
+- hosts: OSEv3
+  become: true
+  vars:
+  - etcd_version: 3.2.22
+
+  tasks:
+  - name: Force docker pull images
+    shell: |
+      docker pull registry.access.redhat.com/openshift3/csi-attacher:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/csi-driver-registrar:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/csi-livenessprobe:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/csi-provisioner:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/image-inspector:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/local-storage-provisioner:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/manila-provisioner:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-ansible:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-cli:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-cluster-capacity:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-deployer:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-descheduler:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-docker-builder:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-docker-registry:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-egress-dns-proxy:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-egress-http-proxy:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-egress-router:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-f5-router:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-haproxy-router:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-hyperkube:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-hypershift:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-keepalived-ipfailover:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-pod:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-node-problem-detector:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-recycler:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-web-console:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-node:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-control-plane:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/registry-console:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/snapshot-controller:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/snapshot-provisioner:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/apb-base:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/apb-tools:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-service-catalog:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-ansible-service-broker:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/mariadb-apb:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/mediawiki-apb:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/mysql-apb:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/ose-template-service-broker:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/openshift3/postgresql-apb:v{{ openshift_version }}
+      docker pull registry.access.redhat.com/rhel7/etcd:{{ etcd_version }}

@@ -1,0 +1,4 @@
+- name: Unarchive backup.tar on the node
+  unarchive:
+    src: '{{ restore_root }}/{{ backup_prefix }}/{{ ansible_fqdn }}/backup.tar'
+    dest: '{{ restore_target }}'

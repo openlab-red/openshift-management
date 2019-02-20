@@ -1,0 +1,54 @@
+- set_fact:
+    etcd_init_member: '{{ groups.masters.0 }}'
+
+- name: Clean ETCD_INITIAL_CLUSTER_STATE
+  lineinfile:
+    path: /etc/etcd/etcd.conf
+    regexp: '^ETCD_INITIAL_CLUSTER_STATE='
+    state: absent
+
+- name: Ensure ETCD_INITIAL_CLUSTER_STATE=existing
+  lineinfile:
+    path: /etc/etcd/etcd.conf
+    regexp: '^ETCD_INITIAL_CLUSTER_STATE='
+    line: 'ETCD_INITIAL_CLUSTER_STATE=existing'
+    insertafter: '^ETCD_INITIAL_CLUSTER='
+    state: present
+
+- name: Remove any existing etcd data
+  shell: rm -Rf /var/lib/etcd/*
+
+- name: Add etcd member
+  shell: |
+    /usr/local/bin/etcd-member.sh {{ etcd_member }} https://{{ etcd_address }}:2380 | grep ETCD_INITIAL_CLUSTER
+  register: etcdctl
+  ignore_errors: true
+  delegate_to: '{{ etcd_init_member }}'
+  retries: 10
+  delay: 10
+  until: etcdctl.rc == 0
+
+- name: Check Error {{ etcdctl.cmd }}
+  fail:
+    msg: '{{ item }}'
+  with_items: '{{ etcdctl.stderr_lines }}'
+  when: etcdctl.rc !=  0
+
+- name: Check output {{ etcdctl.cmd }}
+  debug:
+    msg: '{{ item }}'
+  with_items: '{{ etcdctl.stdout_lines }}'
+
+- set_fact:
+    etcd_member_cluster: '{{ etcdctl.stdout }}'
+
+- name: Ensure member cluster
+  lineinfile:
+    path: /etc/etcd/etcd.conf
+    regexp: '^ETCD_INITIAL_CLUSTER='
+    line: '{{ etcd_member_cluster }}'
+    state: present
+
+- import_role:
+    name: common
+    tasks_from: start-etcd.yaml

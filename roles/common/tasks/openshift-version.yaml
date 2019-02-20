@@ -1,0 +1,11 @@
+- name: Gather OpenShift Version
+  block:
+    - shell: oc version 2>/dev/null | grep "oc " | cut -d'v' -f2
+      register: oc_version_cmd
+
+    - set_fact:
+        openshift_master_version: '{{ oc_version_cmd.stdout }}'
+  when: openshift_master_version is undefined or openshift_master_version != ''
+
+- debug:
+    msg: 'OpenShift version: {{ openshift_master_version }}'

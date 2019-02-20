@@ -1,0 +1,27 @@
+- import_tasks: prepare.yaml
+  tags: always
+
+- import_tasks: aws_s3.yaml
+  tags: aws_s3
+  when: aws_s3 is defined and aws_s3 | bool
+
+# I cannot stop the node I need kubelet daemon running.
+# - import_role:
+#    name: common
+#    tasks_from: stop-node.yaml
+#  tags: nodes
+
+- import_role:
+    name: common
+    tasks_from: stop-all.yaml
+  tags: masters, etcd
+
+- import_tasks: restore-node.yaml
+  tags:
+    - nodes
+    - masters
+
+- import_role:
+    name: etcd
+    tasks_from: restore.yaml
+  tags: etcd

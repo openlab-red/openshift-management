@@ -1,0 +1,14 @@
+---
+- import_tasks: openshift-version.yaml
+
+### restart etcd
+- name: Restart etcd instances
+  systemd:
+    name:  etcd
+    state: restarted
+  when: "'3.9' in openshift_master_version"
+
+- name: Restart etcd instances
+  shell: /usr/local/bin/master-restart etcd
+  failed_when: false
+  when: "'3.10' in openshift_master_version or '3.11' in openshift_master_version"

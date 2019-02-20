@@ -1,0 +1,4 @@
+- block:
+    - import_tasks: stop-master.yaml
+    - import_tasks: stop-etcd.yaml
+  when: "'masters' in group_names"

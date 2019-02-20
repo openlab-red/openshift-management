@@ -1,0 +1,62 @@
+- hosts: masters
+  vars:
+  - debug_loglevel: 2
+  tasks:
+  - name: Ensure log level to {{ debug_loglevel }}
+    lineinfile:
+      path: /etc/origin/master/master.env
+      regexp: '^DEBUG_LOGLEVEL='
+      line: "DEBUG_LOGLEVEL={{ debug_loglevel}}"
+      state: present
+    tags: loglevel
+
+  - name: Restart masters
+    shell: /usr/local/bin/master-restart {{ item }}
+    failed_when: false
+    with_items:
+    - api
+    - controllers
+    tags: loglevel
+
+  - block:
+    - name: Clean up old logs
+      file:
+        path: /tmp/{{ item }}
+        state: absent
+      with_items:
+      - api.log
+      - controllers.log
+      - etcd.log
+      - '{{ ansible_hostname }}.tar.gz'
+
+    - name: Clean up localhost
+      file: 
+        path: /tmp/master-logs
+        state: absent
+      delegate_to: localhost
+      run_once: true
+
+    - name: Save logs
+      shell: |
+        /usr/local/bin/master-logs {{ item }} {{ item }} 2> /tmp/{{ item }}.log
+      with_items:
+      - api
+      - controllers
+      - etcd
+
+    - name: Create a gz archive of multiple log, rooted at /tmp/{{ ansible_hostname }}.tar.gz
+      archive:
+        path:
+        - /tmp/api.log
+        - /tmp/controllers.log
+        - /tmp/etcd.log
+        dest: /tmp/{{ ansible_hostname }}.tar.gz
+        format: gz
+
+    - name: Fetch logs
+      fetch:
+        src: /tmp/{{ ansible_hostname }}.tar.gz
+        dest: /tmp/master-logs/
+        flat: true
+      tags: fetch
+    tags: collect
