@@ -15,7 +15,7 @@
 |[docker-gc](./playbooks/docker-gc/README.md)|
 |[backup](./playbooks/backup-openshift-nodes.yaml)|
 |[restore](./playbooks/restore-openshift-nodes.yaml)|
-|[master-loglevel for 3.1x](./playbooks/master-loglevel.yaml)|
+|[master-loglevel for 3.1x](playbooks/master-log/README.md)|
 
 # References
 
