@@ -1,7 +1,0 @@
-- name:  Restart Master
-  service:
-    name: '{{ item }}'
-    state: restarted
-  with_items:
-    - atomic-openshift-master-api
-    - atomic-openshift-master-controllers

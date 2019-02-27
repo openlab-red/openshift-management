@@ -16,5 +16,5 @@
 
 
 - import_role:
-    name: openshift_master
+    name: common
     tasks_from: restart-master.yaml

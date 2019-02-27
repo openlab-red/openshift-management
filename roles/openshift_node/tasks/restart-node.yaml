@@ -1,4 +1,0 @@
-- name:  Restart Node
-  service:
-    name: atomic-openshift-node
-    state: restarted

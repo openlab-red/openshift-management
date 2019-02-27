@@ -14,6 +14,6 @@
 - import_tasks: assemble-ca-bundle.yml
 
 - import_role:
-    name: openshift_master
+    name: common
     tasks_from: restart-master.yaml
   when: ca_bundle is changed
