@@ -25,8 +25,7 @@ Restore your OpenShift cluster.
 
 |    Component           |  Variable           | Default                                   |   Tags   |
 |------------------------|---------------------|-------------------------------------------|--------- |
-| Node / Master content  | backup_node_content |                                           | masters  |
-|                        |                     |                                           | nodes    |
+| Node / Master content  | backup_node_content |                                           | masters <br> nodes    |
 |                        |                     |                                           |          |
 |         etcd           |          -          |   etcd snapshot and status                |   etcd   |
 |                        |                     |                                           |          |
