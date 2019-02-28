@@ -1,6 +1,6 @@
 # Ansible switch version
 
-These playbooks "could" run together but it depends if there are breaking change on the ansible code.
+These playbooks "could" run together if there are not breaking changes on ansible code.
 To avoid any undesired problem, run separately.
 
 
