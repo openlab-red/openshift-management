@@ -1,0 +1,32 @@
+- hosts: localhost
+
+  tasks:
+    - name: Gather current Ansible version
+      yum:
+        list: ansible
+      register: yum_list
+
+    - set_fact:
+        ansible_rpm_version_list: '{{ yum_list.results | selectattr("yumstate", "match", "installed") | list }}'
+
+    - set_fact:
+        ansible_rpm_version: '{{ ansible_rpm_version_list[0].envra.split(":")[1] }}'
+
+    - debug:
+        msg: '{{ ansible_rpm_version }}'
+
+    - name: EPEL Release
+      yum_repository:
+        name: epel
+        description: EPEL YUM repo
+        baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+        enabled: no
+        state: present
+      tags: latest
+
+    - name: Update Ansible version
+      yum:
+        name: ansible
+        state: latest
+        enablerepo: epel
+      tags: latest

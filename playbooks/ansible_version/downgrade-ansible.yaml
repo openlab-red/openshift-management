@@ -1,0 +1,13 @@
+- hosts: localhost
+  tasks:
+    - name: Gather current Ansible version
+      shell: ansible --version
+      register: ansible_cmd_version
+
+    - debug:
+        msg: '{{ ansible_cmd_version.stdout_lines }}'
+
+    - name: Downgrade
+      yum:
+        name: '{{ ansible_rpm_version }}'
+        allow_downgrade: True
