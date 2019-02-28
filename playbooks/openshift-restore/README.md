@@ -42,11 +42,12 @@ More details on [openshift-backup components](../openshift-backup/README.md)
 ansible-playbook -i inventory playbooks/openshift-restore/config.yaml -e backup_prefix=2019-02-28@13
 ```
 
+#### AWS S3
+>
 >
 > Be sure the env AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are set
 >
-
-#### AWS S3
+>
 
 ```
 ansible-playbook -i inventory playbooks/openshift-restore/config.yaml -e backup_prefix=2019-02-28@13 -e aws_s3=true -e aws_s3_backup_bucket=eu-central-1-dev-openlab-red-backup -e aws_region=eu-central-1
