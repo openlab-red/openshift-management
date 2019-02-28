@@ -34,6 +34,28 @@ Backup your OpenShift cluster.
 |                        |                     |                                           |          |  
 |        Project         |          -          | ns <br> rolebindings <br> serviceaccounts <br> secrets <br> dcs <br> bcs <br> builds <br> is <br> rcs <br> svcs <br> pods <br> cms <br> pvcs <br> pvcs_attachment <br> routes <br> templates  <br> egressnetworkpolicies <br> imagestreamtags <br> rolebindingrestrictions <br> limitranges  <br> resourcequotas <br> podpreset <br> cronjobs <br> statefulsets <br> hpas<br> deployments <br> replicasets <br> poddisruptionbudget <br> daemonset | project |
 
+All component are saved under the *backup_root/*YYYY-MM-DD@HH*
+
+For instances:
+
+```
+backup/
+└── 2019-02-28@14
+    ├── ip-172-16-18-63.eu-central-1.compute.internal
+    │   └── backup.tar
+    ├── ip-172-16-18-12.eu-central-1.compute.internal
+    │   ├── backup.tar
+    │   ├── etcd.tar
+    │   └── openshift-project.tar
+    ├── ip-172-16-32-10.eu-central-1.compute.internal
+    │   └── backup.tar
+    ├── ip-172-16-55-14.eu-central-1.compute.internal
+    │   └── backup.tar
+    └── ip-172-16-82-171.eu-central-1.compute.internal
+        └── backup.tar
+```
+
+
 ## Usage
 
 
