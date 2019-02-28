@@ -1,0 +1,14 @@
+backup_root: /backup
+backup_dest_path: '{{ backup_root }}/{{ backup_prefix }}/{{ ansible_fqdn }}'
+backup_node_content:
+- /etc/origin
+- /etc/etcd
+- /etc/sysconfig
+- /etc/cni
+- /etc/dnsmasq.d
+- /etc/pki/ca-trust/source/anchors
+- /etc/docker/certs.d
+- /etc/dnsmasq.conf
+
+## AWS s3 ##
+aws_s3: false

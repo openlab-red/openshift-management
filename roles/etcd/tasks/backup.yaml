@@ -15,20 +15,24 @@
     mode: 0750
   with_items:
     - etcd-snapshot.sh
+  tags: etcd
 
 - name: Ensure directory etcd backup exist
   file:
     path: '{{ etcd_backup_root }}'
     state: directory
+  tags: etcd
 
 - name: Ensure etcd package is installed
   yum:
     name: etcd
     state: present
+  tags: etcd
 
 - name: Running etcd data snapshot script [/usr/local/bin/etcd-snapshot.sh {{ etcd_backup_root }}]
   shell: |
     /usr/local/bin/etcd-snapshot.sh {{ etcd_backup_root }}
+  tags: etcd
 
 - name: Backup etcd backup files
   archive:
@@ -36,6 +40,7 @@
     path:
       - '{{ etcd_backup_root }}/db'
       - '{{ etcd_backup_root }}/status'
+  tags: etcd
 
 - name: Fetch snapshot and status
   fetch:
@@ -43,3 +48,4 @@
     dest: '{{ etcd_backup_root }}/{{ backup_prefix }}/{{ ansible_fqdn }}/'
     flat: true
     fail_on_missing: yes
+  tags: etcd

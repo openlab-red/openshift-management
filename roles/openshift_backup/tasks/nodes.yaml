@@ -1,0 +1,16 @@
+---
+
+- import_tasks: package.yaml
+  tags: packages
+
+- name: Backup config directories and files
+  archive:
+    dest: '{{ backup_root }}/backup.tar'
+    path: '{{ backup_node_content }}'
+
+- name: Fetch backup
+  fetch:
+    src: '{{ backup_root }}/backup.tar'
+    dest: '{{ backup_dest_path }}/backup.tar'
+    flat: true
+    fail_on_missing: yes

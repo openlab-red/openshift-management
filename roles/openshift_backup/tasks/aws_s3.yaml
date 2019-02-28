@@ -1,0 +1,13 @@
+- name: Sync backup to s3 bucket
+  s3_sync:
+    bucket: '{{ aws_s3_backup_bucket }}'
+    region: '{{ aws_region }}'
+    key_prefix: '{{ backup_prefix }}/'
+    file_root: '{{ backup_root }}/{{ backup_prefix }}/'
+    mode: push
+    permission: private
+    file_change_strategy: date_size
+  delegate_to: localhost
+  run_once: true
+  when: aws_s3 is defined and aws_s3 | bool
+  tags: s3_sync

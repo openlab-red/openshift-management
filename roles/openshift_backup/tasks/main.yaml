@@ -8,7 +8,7 @@
 
 - import_role:
     name: etcd
-    tasks_from: backup
+    tasks_from: backup.yaml
   when: "ansible_nodename == groups.masters.0"
   run_once: true
   tags: etcd

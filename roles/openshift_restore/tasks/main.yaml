@@ -5,7 +5,8 @@
   tags: aws_s3
   when: aws_s3 is defined and aws_s3 | bool
 
-# I cannot stop the node I need kubelet daemon running.
+# Cannot stop the node
+# Need kubelet daemon running at least for 3.10 and 3.11
 # - import_role:
 #    name: common
 #    tasks_from: stop-node.yaml

@@ -1,0 +1,14 @@
+---
+
+- name: Create list of installed packages
+  shell: |
+    rpm -qa | sort | tee {{ backup_root }}/packages.txt
+
+- name: Save package list path
+  set_fact:
+    package_path:
+      - '{{ backup_root }}/packages.txt'
+
+- name: Add packages list on backup content
+  set_fact:
+    backup_node_content: '{{ backup_node_content | union( package_path ) }}'

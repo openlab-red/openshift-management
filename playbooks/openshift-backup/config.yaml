@@ -1,0 +1,32 @@
+---
+
+- hosts: OSEv3
+
+# Extra vars
+#  vars:
+#   - backup_root: /backup
+#   - aws_s3: true
+#   - aws_s3_backup_bucket:
+#   - aws_region:
+
+  roles:
+    - role: openshift_backup
+
+  post_tasks:
+    - name: Backup content under
+      debug:
+        msg: '{{ backup_root }}/{{ backup_prefix }}/'
+      tags: always
+
+    - import_role:
+        name: openshift_backup
+        tasks_from: aws_s3.yaml
+      tags: s3_sync
+
+    - import_role:
+        name: openshift_backup
+        tasks_from: cleanup.yaml
+      when: aws_s3 is defined and aws_s3 | bool
+      tags:
+        - s3_sync
+        - cleanup
