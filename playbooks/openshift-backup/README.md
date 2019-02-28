@@ -26,17 +26,16 @@ Backup your OpenShift cluster.
 
 |    Component           |  Variable           | Default                                   |   Tags   |
 |------------------------|---------------------|-------------------------------------------|--------- |
-| Node / Master pkg list |  -                  | "rpm -qa \| sort \| tee"                    | packages |
-|                        |                     |                                           |   nodes  |
+| Node / Master pkg list |  -                  | "rpm -qa \| sort \| tee"                  | packages<br>nodes|
 |                        |                     |                                           |          |
-| Node / Master content  | backup_node_content | - /etc/origin                             |  nodes   |
-|                        |                     | - /etc/etcd                               |          |
-|                        |                     | - /etc/sysconfig                          |          |
-|                        |                     | - /etc/cni                                |          |  
-|                        |                     | - /etc/dnsmasq.d                          |          |  
-|                        |                     | - /etc/pki/ca-trust/source/anchors        |          |  
-|                        |                     | - /etc/docker/certs.d                     |          |  
-|                        |                     | - /etc/dnsmasq.conf                       |          |
+| Node / Master content  | backup_node_content | - /etc/origin                         
+                                                <br>  - /etc/etcd                               
+                                                <br>  - /etc/sysconfig                          
+                                                <br>  - /etc/cni                                  
+                                                <br>  - /etc/dnsmasq.d                            
+                                                <br>  - /etc/pki/ca-trust/source/anchors          
+                                                <br>  - /etc/docker/certs.d                      
+                                                <br>  - /etc/dnsmasq.conf                  | nodes    |
 |                        |                     |                                           |          |
 |         etcd           |          -          |   etcd snapshot and status                |   etcd   |
 |                        |                     |                                           |          |
