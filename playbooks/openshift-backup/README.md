@@ -26,7 +26,7 @@ Backup your OpenShift cluster.
 
 |    Component           |  Variable           | Default                                   |   Tags   |
 |------------------------|---------------------|-------------------------------------------|--------- |
-| Node / Master pkg list |  -                  | "rpm -qa | sort | tee"                    | packages |
+| Node / Master pkg list |  -                  | "rpm -qa \| sort \| tee"                    | packages |
 |                        |                     |                                           |   nodes  |
 |                        |                     |                                           |          |
 | Node / Master content  | backup_node_content | - /etc/origin                             |  nodes   |
