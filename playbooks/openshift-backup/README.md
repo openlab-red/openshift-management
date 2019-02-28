@@ -28,14 +28,7 @@ Backup your OpenShift cluster.
 |------------------------|---------------------|-------------------------------------------|--------- |
 | Node / Master pkg list |  -                  | "rpm -qa \| sort \| tee"                  | packages<br>nodes|
 |                        |                     |                                           |          |
-| Node / Master content  | backup_node_content | - /etc/origin                         
-                                                <br>  - /etc/etcd                               
-                                                <br>  - /etc/sysconfig                          
-                                                <br>  - /etc/cni                                  
-                                                <br>  - /etc/dnsmasq.d                            
-                                                <br>  - /etc/pki/ca-trust/source/anchors          
-                                                <br>  - /etc/docker/certs.d                      
-                                                <br>  - /etc/dnsmasq.conf                  | nodes    |
+| Node / Master content  | backup_node_content | - /etc/origin <br>  - /etc/etcd <br>  - /etc/sysconfig <br>  - /etc/cni <br>  - /etc/dnsmasq.d <br>  - /etc/pki/ca-trust/source/anchors <br>  - /etc/docker/certs.d <br>  - /etc/dnsmasq.conf | nodes    |
 |                        |                     |                                           |          |
 |         etcd           |          -          |   etcd snapshot and status                |   etcd   |
 |                        |                     |                                           |          |
