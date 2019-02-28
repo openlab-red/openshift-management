@@ -3,7 +3,7 @@
 - hosts: OSEv3
   vars:
     - restore_root: /restore
-    - aws_s3: true
+#    - aws_s3: true
 #   - aws_s3_backup_bucket:
 #   - aws_region:
 #   - backup_prefix:
