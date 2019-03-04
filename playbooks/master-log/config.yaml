@@ -1,4 +1,5 @@
 - hosts: masters
+  serial: 1
   vars:
   - debug_loglevel: 2
   tasks:
