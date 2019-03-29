@@ -1,0 +1,5 @@
+---
+
+- hosts: OSEv3
+  roles:
+  - docker-auth
