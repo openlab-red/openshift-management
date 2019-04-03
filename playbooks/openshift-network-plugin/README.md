@@ -1,6 +1,6 @@
 # OpenShift Network Plugin
 
-Setup docker auth config file on OpenShift Node.
+Change OpenShift Network Plugin.
 
 
 ## Parameters
