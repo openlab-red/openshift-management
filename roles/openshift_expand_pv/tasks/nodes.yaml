@@ -8,7 +8,6 @@
     state: present
     backup: yes
 
-- name:  Restart Node
-  service:
-    name: atomic-openshift-node
-    state: restarted
+- import_role:
+    name: common
+    tasks_from: restart-node.yaml

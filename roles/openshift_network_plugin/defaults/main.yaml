@@ -1,0 +1,8 @@
+openshift_network_plugin_type: 'redhat/openshift-ovs-networkpolicy'
+
+openshift_network_plugin_master_config:
+  - '/etc/origin/master/master-config.yaml'
+openshift_network_plugin_node_config:
+  - '/etc/origin/node/node-config.yaml'
+  - '/etc/origin/node/bootstrap-node-config.yaml'
+  - '/etc/origin/node/tmp/node-config.yaml'

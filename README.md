@@ -11,12 +11,14 @@
 |[openshift-ca-bundle](./playbooks/openshift-ca-bundle/README.md)|
 |[openshift-local-volume](./playbooks/openshift-local-volume/README.md)|
 |[openshift-admission-webhook](./playbooks/openshift-admission-webhook/README.md)|
-|[provision-lvm](./playbooks/provision-lvm/README.md)|
-|[docker-gc](./playbooks/docker-gc/README.md)|
 |[openshift-backup](playbooks/openshift-backup/README.md)|
 |[openshift-restore](playbooks/openshift-restore/README.md)|
+|[openshif-network-plugin](playbooks/openshift-network-plugin/README.md)|
 |[master-log](playbooks/master-log/README.md)|
 |[ansible-version](playbooks/ansible-version/README.md)|
+|[provision-lvm](./playbooks/provision-lvm/README.md)|
+|[docker-gc](./playbooks/docker-gc/README.md)|
+|[docker-auth](./playbooks/docker-auth/README.md)|
 
 # References
 

@@ -1,0 +1,5 @@
+---
+
+- hosts: OSEv3
+  roles:
+  - openshift_network_plugin

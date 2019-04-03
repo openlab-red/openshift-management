@@ -22,10 +22,6 @@
     state: present
     backup: yes
 
-- name:  Restart master api
-  service:
-    name: '{{ item }}'
-    state: restarted
-  with_items:
-    - atomic-openshift-master-api
-    - atomic-openshift-master-controllers
+- import_role:
+    name: common
+    tasks_from: restart-master.yaml
