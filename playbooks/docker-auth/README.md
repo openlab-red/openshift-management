@@ -18,7 +18,7 @@ Setup docker auth config file on OpenShift Node.
 docker_auth_registries:
 - name: redhat.io
   auth: <token>
-- name: https://index.docker.io
+- name: https://index.docker.io/v1/
   auth: <token>
 ```
 
