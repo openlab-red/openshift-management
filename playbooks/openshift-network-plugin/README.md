@@ -2,6 +2,7 @@
 
 Change OpenShift Network Plugin.
 
+TBD: Update configmap on openshift-node project.
 
 ## Parameters
 
