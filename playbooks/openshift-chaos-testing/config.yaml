@@ -14,6 +14,7 @@
       debug:
         var: selected_node
     run_once: true
+    
     tags:
     - reboot_node
 
@@ -23,7 +24,7 @@
       tasks_from: reboot-node.yaml
     when: "ansible_nodename == selected_node"
     tags:
-      - reboot_node
+    - reboot_node
 
   - name: crash etcd leader
     block:
