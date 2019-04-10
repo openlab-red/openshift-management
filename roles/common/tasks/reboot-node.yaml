@@ -1,0 +1,13 @@
+# only available in ansible version 2.7
+#- name: Reboot the node
+#  reboot:
+#    reboot_timeout: 3600
+#
+
+- name: Reboot node  {{ ansible_hostname }}
+  shell: >
+    sleep 2 && shutdown -r now "By chaos playbook"
+  async: 1
+  poll: 0
+  register: rebootlog
+  ignore_errors: true

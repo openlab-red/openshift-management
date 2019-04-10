@@ -1,0 +1,11 @@
+---
+- name: distribute the script to get etcd leader
+  copy:
+    src: '{{ item }}'
+    dest: '/usr/local/bin/{{ item }}'
+    owner: root
+    group: root
+    mode: 0750
+  with_items:
+    - etcd-leader.sh
+  tags: etcd
