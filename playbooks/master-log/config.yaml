@@ -53,11 +53,31 @@
         - /tmp/etcd.log
         dest: /tmp/{{ ansible_hostname }}.tar.gz
         format: gz
-
-    - name: Fetch logs
-      fetch:
-        src: /tmp/{{ ansible_hostname }}.tar.gz
-        dest: /tmp/master-logs/
-        flat: true
-      tags: fetch
     tags: collect
+
+  - name: Fetch logs
+    fetch:
+      src: /tmp/{{ ansible_hostname }}.tar.gz
+      dest: /tmp/master-logs/
+      flat: true
+    tags:
+    - fetch
+    - collect
+
+  - name: Create dest directory
+    file:
+      path: /tmp/master-logs/{{ ansible_hostname }}
+      state: directory
+    delegate_to: localhost
+    tags:
+    - unarchive
+    
+  - name: Extract logs
+    unarchive:
+      src: /tmp/master-logs/{{ ansible_hostname }}.tar.gz
+      dest: /tmp/master-logs/{{ ansible_hostname }}
+    delegate_to: localhost
+    tags:
+    - unarchive
+
+
