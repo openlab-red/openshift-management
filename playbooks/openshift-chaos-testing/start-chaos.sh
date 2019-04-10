@@ -2,6 +2,7 @@
 
 LIMIT_GROUPS=( nodes masters nodes:!masters )
 TASK=( crash_node crash_etcd_leader )
+INVENTORY=$1
 
 while true
 do
@@ -15,7 +16,7 @@ sleep_min=30
 sleep_range=30
 sleep_time=$[ ( $RANDOM % $sleep_range )  + $sleep_min ]
 
-echo "executing: ansible-playbook -i inventory/hosts config.yaml -l '${LIMIT_GROUPS[$lindex]}' -t ${TASK[$tindex]}"
+echo "executing: ansible-playbook -i ${INVENTORY} config.yaml -l '${LIMIT_GROUPS[$lindex]}' -t ${TASK[$tindex]}"
 
 echo "sleeping $sleep_time minutes"
 
