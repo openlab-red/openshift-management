@@ -18,6 +18,10 @@ sleep_time=$[ ( $RANDOM % $sleep_range )  + $sleep_min ]
 
 echo "executing: ansible-playbook -i ${INVENTORY} config.yaml -l '${LIMIT_GROUPS[$lindex]}' -t ${TASK[$tindex]}"
 
+set -x
+ansible-playbook -i "${INVENTORY}"  config.yaml -l "${LIMIT_GROUPS[$lindex]}" -t "${TASK[$tindex]}"
+set +x
+
 echo "sleeping $sleep_time minutes"
 
 sleep "$sleep_time"m
