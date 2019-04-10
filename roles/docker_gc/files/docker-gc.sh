@@ -23,7 +23,7 @@ function images {
             comm -23 ${MKTEMP}/images.dangling ${MKTEMP}/images.used | tee ${MKTEMP}/images.gc
             ;;
         --run)
-            xargs -n 1 docker rmi < ${MKTEMP}/images.gc
+            xargs -n 1 docker rmi -f < ${MKTEMP}/images.gc
             ;;
     esac
 }
