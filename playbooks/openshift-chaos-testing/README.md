@@ -2,6 +2,10 @@
 To be able to kill openshift infrastructure compoents randomly.
 
 ## Usage
+Start the test by running 
+```
+./start-chaos.sh <absolute-path-to-inventroy>
+```
 
 ### Kill one openshift node randomly
 ```
