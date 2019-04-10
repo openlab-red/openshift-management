@@ -16,7 +16,7 @@
     run_once: true
     
     tags:
-    - reboot_node
+    - crash_node
 
   - name: Rebooting node {{ selected_node }}
     import_role:
@@ -24,7 +24,7 @@
       tasks_from: reboot-node.yaml
     when: "ansible_nodename == selected_node"
     tags:
-    - reboot_node
+    - crash_node
 
   - name: crash etcd leader
     block:
