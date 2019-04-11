@@ -14,6 +14,7 @@
 |[openshift-backup](playbooks/openshift-backup/README.md)|
 |[openshift-restore](playbooks/openshift-restore/README.md)|
 |[openshif-network-plugin](playbooks/openshift-network-plugin/README.md)|
+|[openshift-chaos-testing](playbooks/openshift-chaos-testing/README.md)|
 |[master-log](playbooks/master-log/README.md)|
 |[ansible-version](playbooks/ansible-version/README.md)|
 |[provision-lvm](./playbooks/provision-lvm/README.md)|
