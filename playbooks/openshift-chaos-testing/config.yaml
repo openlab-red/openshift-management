@@ -1,0 +1,60 @@
+---
+- name: start chaos testing
+  hosts: all
+
+  tasks:
+
+  - block:
+    - name: select a random_node
+      set_fact:
+        selected_node: "{{ item }}"
+      with_random_choice: "{{ ansible_play_hosts }}"
+
+    - name: node {{ selected_node }}
+      debug:
+        var: selected_node
+    run_once: true
+    
+    tags:
+    - crash_node
+
+  - name: Rebooting node {{ selected_node }}
+    import_role:
+      name: common
+      tasks_from: reboot-node.yaml
+    when: "ansible_nodename == selected_node"
+    tags:
+    - crash_node
+
+  - name: crash etcd leader
+    block:
+    - name: distribute the script to get etcd leader
+      import_role:
+         name: etcd
+         tasks_from: leader.yaml
+      when: ansible_nodename in groups['masters']
+      
+    
+    - name: execute the script to get leader
+      shell: >
+          /usr/local/bin/etcd-leader.sh
+      register: etcd_leader
+      when: ansible_nodename == groups['masters'][0]
+
+    - name: setfact etcd leader is  {{ etcd_leader.stdout }}
+      set_fact:
+        fact_etcd_leader: "{{ etcd_leader.stdout }}"
+      run_once: true
+
+    - name: etcd leader found and killing it
+      import_role:
+        name: common
+        tasks_from: reboot-node.yaml
+      when:
+      - ansible_default_ipv4['address'] == fact_etcd_leader
+
+    tags:
+    - crash_etcd_leader
+    
+
+  
