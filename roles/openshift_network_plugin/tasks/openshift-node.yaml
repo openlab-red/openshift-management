@@ -1,0 +1,20 @@
+- name: Prepare workdir to update configmap {{ openshift_network_plugin_configmap }} on openshift-node
+  file:
+    path: '{{ openshift_network_plugin_dir }}/{{ openshift_network_plugin_configmap }}'
+    state: directory
+
+- name: Extract config map {{ openshift_network_plugin_configmap }} on openshift-node
+  shell: oc extract cm/{{ openshift_network_plugin_configmap }} -n openshift-node --to={{ openshift_network_plugin_dir }}/{{ openshift_network_plugin_configmap }}
+
+- name: Updating Network Plugin to {{ openshift_network_plugin_type }} on cm {{ openshift_network_plugin_configmap }}
+  yedit:
+    src: '{{ openshift_network_plugin_dir }}/{{ openshift_network_plugin_configmap }}/node-config.yaml'
+    key: networkConfig.networkPluginName
+    value: '{{ openshift_network_plugin_type }}'
+    state: present
+
+- name: Delete config map {{ openshift_network_plugin_configmap }}
+  shell: oc delete cm {{ openshift_network_plugin_configmap }} -n openshift-node
+
+- name: Create config map {{ openshift_network_plugin_configmap }} with openshift_network_plugin_type network plugin
+  shell: oc create configmap {{ openshift_network_plugin_configmap }} -n openshift-node --from-file={{ openshift_network_plugin_dir }}/{{ openshift_network_plugin_configmap }}

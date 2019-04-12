@@ -8,6 +8,22 @@
     backup: yes
   with_items: '{{ openshift_network_plugin_master_config }}'
 
+- name: Create temp directory for doing work in
+  command: mktemp -d /tmp/openshift-network-plugin-ansible-XXXXXX
+  register: mktemp
+  changed_when: False
+  check_mode: no
+  tags: always
+
+- set_fact:
+    openshift_network_plugin_dir: '{{ mktemp.stdout }}'
+
+- include_tasks: openshift-node.yaml
+  run_once: true
+  with_items: '{{ openshift_network_plugin_openshift_node_cm }}'
+  loop_control:
+    loop_var: openshift_network_plugin_configmap
+
 - import_role:
     name: common
     tasks_from: restart-master.yaml

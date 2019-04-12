@@ -6,3 +6,10 @@ openshift_network_plugin_node_config:
   - '/etc/origin/node/node-config.yaml'
   - '/etc/origin/node/bootstrap-node-config.yaml'
   - '/etc/origin/node/tmp/node-config.yaml'
+
+openshift_network_plugin_openshift_node_cm:
+  - node-config-all-in-one
+  - node-config-compute
+  - node-config-infra
+  - node-config-master
+  - node-config-master-infra
