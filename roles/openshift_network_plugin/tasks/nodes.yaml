@@ -8,7 +8,15 @@
     backup: yes
   with_items: '{{ openshift_network_plugin_node_config }}'
 
+- import_role:
+    name: common
+    tasks_from: stop-node.yaml
+
+- name: restart OpenShift SDN on all masters and nodes
+  shell: oc delete pod --all -n openshift-sdn
+  run_once: true
+  when: "'3.10' in openshift_master_version or '3.11' in openshift_master_version"
 
 - import_role:
     name: common
-    tasks_from: restart-node.yaml
+    tasks_from: start-node.yaml
