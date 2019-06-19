@@ -15,6 +15,7 @@
 - name: restart OpenShift SDN on all masters and nodes
   shell: oc delete pod --all -n openshift-sdn
   run_once: true
+  when: "'3.10' in openshift_master_version or '3.11' in openshift_master_version"
 
 - import_role:
     name: common
