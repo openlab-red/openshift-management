@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+  initContainers:
+  - name: init-myservice
+    image: busybox
+    command: ['sh', '-c', 'sleep 1']
+  - name: init-mygc
+    image: busybox
+    command: ['sh', '-c', 'sleep 2']
+  - name: init-broken
+    image: busybox
+    command: ['sh', '-c', 'for i in `seq 1 100`; do nslookup non.existent.domain; echo waiting for nslookup; sleep 2; done']
+
