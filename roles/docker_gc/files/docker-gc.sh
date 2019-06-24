@@ -13,7 +13,7 @@ function containers {
         --run)
             exited=$(docker ps -qa --filter status=exited --filter status=dead)
             to_remove=$(inspect $exited)
-            docker rm -v -f $to_remove 2>/dev/null
+            docker rm -v -f $to_remove
             ;;
     esac
 }
