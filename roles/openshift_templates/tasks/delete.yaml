@@ -13,16 +13,3 @@
   with_items: "{{ templates }}"
   ignore_errors: true
     
-
-# Delete all
-# - name: Delete all clusterserviceclass under {{ openshift_template_ksc }} ns
-#   shell: |
-#     oc -n {{ openshift_template_ksc }} \
-#     delete clusterserviceclass --all
-#   when: templates is not defined
- 
-# - name: Delete specified clusterserviceclass under {{ openshift_template_ksc }} ns
-#   shell: |
-#     oc -n {{ openshift_template_ksc }} \
-#     delete clusterserviceclass "{{ clusterserviceclass }}"
-#   when: clusterserviceclass is defined
