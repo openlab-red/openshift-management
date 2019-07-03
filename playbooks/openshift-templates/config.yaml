@@ -1,0 +1,7 @@
+---
+- hosts: masters[0]
+
+  roles:
+    - role: openshift_templates
+
+     

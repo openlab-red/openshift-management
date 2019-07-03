@@ -1,0 +1,9 @@
+---
+- name: include backup task list      
+  import_tasks: backup.yaml
+  tags: backup
+
+- name: include delete task list 
+  import_tasks: delete.yaml
+  tags: delete
+

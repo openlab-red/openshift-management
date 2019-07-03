@@ -1,0 +1,6 @@
+---
+openshift_template_backup_root: /tmp/catalog_cleanup
+openshift_template_backup_dest_path: '{{ openshift_template_backup_root }}/templates'
+
+openshift_template_ksc: kube-service-catalog
+

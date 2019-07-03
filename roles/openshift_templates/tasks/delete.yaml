@@ -1,0 +1,28 @@
+- name: Delete all templates under openshift ns
+  shell: |
+    oc -n openshift \
+    delete templates --all
+  when: templates is undefined
+  
+# Delete specific
+- name: Delete specified templates from extra-vars file
+  shell: |
+    oc -n openshift \
+    delete template {{ item }}
+  when: templates is defined
+  with_items: "{{ templates }}"
+  ignore_errors: true
+    
+
+# Delete all
+# - name: Delete all clusterserviceclass under {{ openshift_template_ksc }} ns
+#   shell: |
+#     oc -n {{ openshift_template_ksc }} \
+#     delete clusterserviceclass --all
+#   when: templates is not defined
+ 
+# - name: Delete specified clusterserviceclass under {{ openshift_template_ksc }} ns
+#   shell: |
+#     oc -n {{ openshift_template_ksc }} \
+#     delete clusterserviceclass "{{ clusterserviceclass }}"
+#   when: clusterserviceclass is defined
