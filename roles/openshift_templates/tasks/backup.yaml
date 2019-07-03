@@ -1,0 +1,24 @@
+---
+- name: Ensure backup directory exists
+  file:
+    path: '{{ openshift_template_backup_dest_path }}'
+    state: directory
+    owner: '{{ ansible_ssh_user }}'
+    group: '{{ ansible_ssh_user }}'
+
+- name: Backup {{ openshift_template_ksc }} ns templates
+  shell: |
+    oc -n {{ openshift_template_ksc }} \
+    get templates -o yaml --export > {{ openshift_template_backup_dest_path }}/sc_templates.yaml
+  ignore_errors: yes
+
+- name: Backup {{ openshift_template_ksc }} ns clusterserviceclass
+  shell: |
+    oc -n {{ openshift_template_ksc }} \
+    get clusterserviceclass -o yaml --export > {{ openshift_template_backup_dest_path }}/sc_clusterserviceclasses.yaml
+  ignore_errors: yes
+
+- name: Backup openshift ns templates
+  shell: |
+    oc -n openshift \
+    get templates -o yaml --export > {{ openshift_template_backup_dest_path }}/openshift_sc_templates.yaml
