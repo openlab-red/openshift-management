@@ -1,0 +1,23 @@
+- name: Export specified templates
+  shell: |
+    oc -n openshift \
+    get template {{ item }} -o yaml --export > {{ item }}
+  when: templates_to_keep is defined
+  with_items: "{{ templates_to_keep }}"
+  ignore_errors: true
+  register: keep
+
+- name: Delete all templates under openshift ns
+  shell: |
+    oc -n openshift \
+    delete templates --all
+  when: templates_to_keep is defined
+
+- name: Keep specified templates
+  shell: |
+    oc -n openshift \
+    create -f {{ item }}
+  when: templates_to_keep is defined
+  with_items: "{{ templates_to_keep }}"
+  ignore_errors: true
+
