@@ -18,9 +18,21 @@
           status: "In Progress"
           start: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"
 
-- hosts: all
+- hosts: masters
   roles:
-  - role: openshift_ca_bundle
+    - openshift_ca_bundle
+  tags:
+    - ca-bundle
+
+- hosts: OSEv3
+  tasks:
+    - import_role:
+        name: openshift_ca_bundle
+        tasks_from: node.yaml
+  tags:
+    - ca-bundle
+    - ca-client
+
 
 - name: CA Bundle Checkpoint End
   hosts: localhost

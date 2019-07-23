@@ -9,6 +9,9 @@
     dest: '{{ backup_root }}/openshift/openshift-project.tar'
     format: tar
 
+- set_fact:
+    backup_dest_path: '{{ backup_root }}/{{ backup_prefix }}/{{ groups.masters.0 }}'
+
 - name: Fetch OpenShift Project archive
   fetch:
     src: '{{ backup_root }}/openshift/openshift-project.tar'

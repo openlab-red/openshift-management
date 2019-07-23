@@ -11,6 +11,8 @@
   file:
     path: '{{ backup_dest_path }}'
     state: directory
+    owner: '{{ ansible_ssh_user }}'
+    group: '{{ ansible_ssh_user }}'
   delegate_to: localhost
 
 - name: Copy backup scripts

@@ -4,27 +4,33 @@
 
 - import_tasks: restore/init.yaml
   when: ansible_fqdn == groups.masters.0
-  run_once: true
   tags: etcd
 
 # Serial execution
 - include_tasks: restore/member.yaml
   vars:
+    etcd_hostname: '{{ hostvars[etcd_member]["ansible_hostname"] }}'
     etcd_address: '{{ hostvars[etcd_member]["ansible_default_ipv4"].address }}'
-  delegate_to: '{{ etcd_member }}'
-  with_items: '{{ groups["masters"][1:] }} '
+  with_items: '{{ groups["masters"][1:] }}'
   loop_control:
     loop_var: etcd_member
-  run_once: true
+  when: ansible_fqdn == groups.masters.0
   tags:
   - etcd
   - etcd_member
+
+- shell: |
+    grep ETCD_INITIAL_CLUSTER= /etc/etcd/etcd.conf
+  register: etcdctl
+  when: ansible_fqdn == groups["masters"][-1]
+
+- set_fact:
+    etcd_member_cluster: '{{ etcdctl.stdout }}'
+  when: ansible_fqdn == groups["masters"][-1]
 
 - name: Ensure member cluster are aligned in all etcd instance
   lineinfile:
     path: /etc/etcd/etcd.conf
     regexp: '^ETCD_INITIAL_CLUSTER='
-    line: '{{ etcd_member_cluster }}'
-  tags:
-    - etcd
-    - etcd_member
+    line: '{{ hostvars[groups["masters"][-1]].etcd_member_cluster }}'
+  when: ansible_fqdn in groups["masters"]

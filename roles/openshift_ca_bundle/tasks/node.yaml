@@ -1,0 +1,38 @@
+- name: Create temp directory for doing work in
+  command: mktemp -d /tmp/openshift-ca-bundle-ansible-XXXXXX
+  register: mktemp
+  changed_when: False
+  check_mode: no
+  tags: always
+  delegate_to: localhost
+  run_once: true
+
+- name: Fetch ca-bundle.crt
+  fetch:
+    src: /etc/origin/master/ca-bundle.crt
+    dest: '{{ mktemp.stdout }}/ca-bundle.crt'
+    flat: true
+  when: "'masters' in group_names"
+  run_once: true
+
+- name: Update client ca bundle with {{ mktemp.stdout }}/ca-bundle.crt
+  copy:
+    src: '{{ mktemp.stdout }}/ca-bundle.crt'
+    dest: /etc/origin/node/client-ca.crt
+
+- name: encode client-ca.crt
+  shell: cat /etc/origin/node/client-ca.crt | base64 -w0
+  register: ca_encode
+
+- name: Update ca on node.kubeconfig
+  yedit:
+    src: /etc/origin/node/node.kubeconfig
+    key: clusters[0].cluster.certificate-authority-data
+    value:
+      '{{ ca_encode.stdout }}'
+    state: present
+    backup: yes
+
+- import_role:
+    name: common
+    tasks_from: restart-node.yaml

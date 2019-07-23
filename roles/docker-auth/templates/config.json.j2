@@ -1,10 +1,10 @@
 {
- "auths": {
+  "auths": {
 {% for registry in docker_auth_registries %}
-   "{{ registry.name }}": {
-     "auth": "{{ registry.auth }}"
-   },
+  "{{ registry.name }}": {
+    "auth": "{{ registry.auth }}"
+  },
 {% endfor %}
-   "": {}
- }
+    "": {}
+  }
 }

@@ -17,8 +17,6 @@
         tasks_from: start-all.yaml
       tags: start
 
-# TODO: Add wait api
-
     - import_role:
         name: common
         tasks_from: restart-node.yaml

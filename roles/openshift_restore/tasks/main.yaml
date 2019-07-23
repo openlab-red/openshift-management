@@ -25,4 +25,5 @@
 - import_role:
     name: etcd
     tasks_from: restore.yaml
+  when: "'masters' in group_names"
   tags: etcd

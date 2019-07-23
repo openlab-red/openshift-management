@@ -1,4 +1,5 @@
 - name: Gather OpenShift Version
+  check_mode: no
   block:
     - shell: oc version 2>/dev/null | grep "oc " | cut -d'v' -f2
       register: oc_version_cmd

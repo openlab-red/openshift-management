@@ -45,7 +45,7 @@
 - name: Fetch snapshot and status
   fetch:
     src: '{{ etcd_backup_root }}/etcd.tar'
-    dest: '{{ etcd_backup_root }}/{{ backup_prefix }}/{{ ansible_fqdn }}/'
+    dest: '{{ etcd_backup_root }}/{{ backup_prefix }}/{{ groups.masters.0 }}/'
     flat: true
     fail_on_missing: yes
   tags: etcd

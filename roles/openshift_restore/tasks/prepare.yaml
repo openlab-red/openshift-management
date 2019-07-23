@@ -8,6 +8,8 @@
   file:
     path: '{{ restore_root }}/{{ backup_prefix }}/{{ item }}'
     state: directory
+    owner: '{{ ansible_ssh_user }}'
+    group: '{{ ansible_ssh_user }}'
   delegate_to: localhost
   run_once: true
   with_items:

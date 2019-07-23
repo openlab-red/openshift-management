@@ -13,7 +13,7 @@
     dest: '{{ mktemp.stdout }}/{{ item }}'
     mode: 0755
   with_items:
-    - docker-gc.sh
+  - docker-gc.sh
   tags: always
 
 - import_tasks: docker-gc-command.yml

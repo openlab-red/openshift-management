@@ -2,7 +2,7 @@
   lineinfile:
     path: /etc/etcd/etcd.conf
     regexp: '^ETCD_INITIAL_CLUSTER='
-    line: 'ETCD_INITIAL_CLUSTER={{ groups.masters.0 }}=https://{{ ansible_default_ipv4.address }}:2380 '
+    line: 'ETCD_INITIAL_CLUSTER={{ hostvars[groups.masters.0]["ansible_hostname"] }}=https://{{ hostvars[groups.masters.0]["ansible_default_ipv4"].address }}:2380 '
     backup: yes
 
 - name: Clean ETCD_FORCE_NEW_CLUSTER

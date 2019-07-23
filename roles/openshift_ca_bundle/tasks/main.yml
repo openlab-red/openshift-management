@@ -13,6 +13,24 @@
 
 - import_tasks: assemble-ca-bundle.yml
 
+- name: encode ca-bundle.crt
+  shell: cat /etc/origin/master/ca-bundle.crt | base64
+  register: ca_encode
+
+- name: Update ca on admin.kubeconfig
+  yedit:
+    src: /etc/origin/master/admin.kubeconfig
+    key: clusters[0].cluster.certificate-authority-data
+    value: '{{ ca_encode.stdout }}'
+    state: present
+    backup: yes
+
+- name: Copy current OpenShift ca.crt
+  copy:
+    src: /etc/origin/master/admin.kubeconfig
+    dest: /root/.kube/config
+    remote_src: true
+
 - import_role:
     name: common
     tasks_from: restart-master.yaml
