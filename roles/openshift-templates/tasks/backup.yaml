@@ -22,3 +22,18 @@
   shell: |
     oc -n openshift \
     get templates -o yaml --export > {{ openshift_template_backup_dest_path }}/openshift_sc_templates.yaml
+
+# ansible-doc s3_sync
+- name: Sync backup templates to {{ openshift_template_aws_s3_backup_bucket }} bucket
+  s3_sync:
+    bucket: '{{ openshift_template_aws_s3_backup_bucket }}'
+    region: '{{ aws_region }}'
+    key_prefix: '{{ openshift_template_backup_prefix }}/'
+    file_root: '{{ openshift_template_backup_root }}/{{ openshift_template_backup_prefix }}/'
+    mode: push
+    permission: private
+    file_change_strategy: date_size
+  delegate_to: localhost
+  run_once: true
+  when: openshift_template_aws_s3 is defined and templates_to_keep is defined 
+  tags: openshift_template_s3_sync
